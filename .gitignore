@@ -1,0 +1,10 @@
+RCS/
+__pycache__/
+.mypy_cache/
+*.pyc
+*~
+\#*
+OttoPi.conf
+
+*.s#?
+*.b#?
