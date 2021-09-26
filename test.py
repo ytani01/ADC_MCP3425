@@ -37,6 +37,6 @@ while True:
     print('raw=%X' % raw)
     raw_s = sign16(raw)
     print('raw_s=%X' % raw_s)
-    volts = round((raw_s * VREF / 0b0111111111111111), 4)
-    print('volts=%.2f, x3 = %.2f' % (volts, volts * 3))
-    time.sleep(1)
+    volts = raw_s * VREF / 0b0111111111111111
+    print('volts=%.3f, x3 = %.3f' % (volts, volts * 3))
+    time.sleep(2)
