@@ -1,17 +1,26 @@
 #!/usr/bin/env python3
 #
+# for MCP3425
 #
-import pigpio
+#   10K   10K  10K
+#  -^^^-+-^^^--^^^-
+# |     |          |
+# GND  VIN+       Vsrc
+#
 import time
+import pigpio
 
 BUS = 1
 ADDR = 0x68
 CONFIG = 0b10011000
-Vref = 2.048
+VREF = 2.048
 
-def sign16(raw):
-    return ( -(raw & 0b1000000000000000) |
-             (raw & 0b0111111111111111) )
+
+def sign16(raw_val):
+    """ sign16 """
+    return (-(raw_val & 0b1000000000000000) |
+             (raw_val & 0b0111111111111111))
+
 
 pi = pigpio.pi()
 
@@ -28,6 +37,6 @@ while True:
     print('raw=%X' % raw)
     raw_s = sign16(raw)
     print('raw_s=%X' % raw_s)
-    volts = round((raw_s * Vref / 0b0111111111111111), 4)
-    print('volts=%s' % volts)
+    volts = round((raw_s * VREF / 0b0111111111111111), 4)
+    print('volts=%.2f, x3 = %.2f' % (volts, volts * 3))
     time.sleep(1)
