@@ -8,12 +8,40 @@
 # GND  VIN+       Vsrc
 #
 import time
+import threading
 import pigpio
-from MCP3425 import MCP3425
+from adc_mcp3425 import MCP3425, get_logger
+
+
+class Sensor(threading.Thread):
+    """ Sensor """
+
+    DEF_INTERVAL_SEC = 1.0  # sec
+
+    __log = get_logger(__name__, False)
+
+    def __init__(self, interval_sec=DEF_INTERVAL_SEC, debug=False):
+        """ init """
+        self._dbg = debug
+        __class__.__log = get_logger(__class__.__name__, self._dbg)
+        self.__log.debug('interval_sec=%s', interval_sec)
+
+        self._interval_sec = interval_sec
+
+        self._active = False
+
+        super().__init__(daemon=True)
+
+    def end(self):
+        """ end """
+        selt._active = False
+
 
 
 def main():
     pi = pigpio.pi()
+
+    __log = get_logger(__name__, True)
 
     adc = MCP3425(pi)
 
@@ -21,13 +49,12 @@ def main():
 
     while True:
         v = adc.get(1, 0.01)
-        #print('v=%.3f, v*3=%.3f' % (v, v*3))
         volts.append(v)
         if len(volts) > 5:
             volts.pop(0)
         tm = time.localtime()
         v_ave = sum(volts) / len(volts)
-        #print('v_ave=%.3f, v_ave*3=%.3f' % (v_ave, v_ave*3))
+        __log.debug('v_ave=%s', v_ave)
         print('%04d/%02d/%02d %02d:%02d:%02d, %.3f' % (
             tm.tm_year, tm.tm_mon, tm.tm_mday,
             tm.tm_hour, tm.tm_min, tm.tm_sec,
