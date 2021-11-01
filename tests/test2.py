@@ -19,7 +19,7 @@ from adc_mcp3425 import MCP3425, get_logger
 class Sensor(threading.Thread):
     """ Sensor """
 
-    DEF_INTERVAL_SEC = 2  # sec
+    DEF_INTERVAL_SEC = 5  # sec
     DEF_AVE_N = 10
 
     STAT = {'NORM': 0, 'HIGH': 1, 'LOW': -1}
