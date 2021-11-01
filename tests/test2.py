@@ -9,6 +9,7 @@
  GND  VIN+       Vsrc
 
 """
+import sys
 import time
 import threading
 import pigpio
@@ -18,7 +19,7 @@ from adc_mcp3425 import MCP3425, get_logger
 class Sensor(threading.Thread):
     """ Sensor """
 
-    DEF_INTERVAL_SEC = 0.2  # sec
+    DEF_INTERVAL_SEC = 2  # sec
     DEF_AVE_N = 10
 
     STAT = {'NORM': 0, 'HIGH': 1, 'LOW': -1}
@@ -94,8 +95,14 @@ def main():
 
     __log = get_logger(__name__, True)
 
+    __log.debug('sys.argv=%s', sys.argv)
+
+    debug = False
+    if len(sys.argv) > 1:
+        debug = True
+        
     adc = MCP3425(pi)
-    sensor_th = Sensor(adc, 3, debug=True)
+    sensor_th = Sensor(adc, 3, debug=debug)
     sensor_th.start()
     time.sleep(1)
 
