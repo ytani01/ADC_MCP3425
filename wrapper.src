@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# Copyright (c) 2021 Yoichi Tanibayashi
+#
+# wrapper script source
+
+CMDNAME="%%% CMDNAME %%%"
+VENVDIR="%%% VENVDIR %%%"
+
+### main ###
+if [ x$VIRTUAL_ENV != x$VENVDIR ]; then
+    ACTIVATE=$VENVDIR/bin/activate
+    if [ -f $ACTIVATE ]; then
+        . $ACTIVATE
+    else
+        echo
+        echo "ERROR(venv): can not activate venv: $VENVDIR"
+        echo
+        exit 1
+    fi
+fi
+echo "VIRTUAL_ENV=$VIRTUAL_ENV"
+echo
+
+exec $CMDNAME $*
