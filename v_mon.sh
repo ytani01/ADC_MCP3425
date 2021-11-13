@@ -8,7 +8,7 @@ MYDIR=`dirname $0`
 LOGDIR=$HOME/tmp
 LOGFILE=$LOGDIR/v.log
 
-CMDLINE="adc_mcp3425.sh watch"
+CMDLINE="$HOME/bin/adc_mcp3425.sh watch"
 
 if [ -f $LOGFILE ]; then
    mv -fv $LOGFILE $LOGFILE.1
